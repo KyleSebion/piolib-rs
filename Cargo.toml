@@ -2,5 +2,7 @@
 name = "piolib-rs"
 version = "0.0.1"
 edition = "2021"
+description = "piolib-rs"
+license = "GPL-2.0"
 
 [dependencies]
