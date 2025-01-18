@@ -4,5 +4,6 @@ version = "0.0.1"
 edition = "2021"
 description = "piolib-rs"
 license = "GPL-2.0"
+repository = "https://github.com/KyleSebion/piolib-rs"
 
 [dependencies]
