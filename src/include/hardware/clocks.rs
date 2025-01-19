@@ -1,5 +1,5 @@
 #[allow(non_camel_case_types)]
-#[repr(C)]
+#[repr(u32)]
 pub enum clock_index {
     clk_gpout0 = 0,     ///< GPIO Muxing 0
     clk_gpout1,         ///< GPIO Muxing 1

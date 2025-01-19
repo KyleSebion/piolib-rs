@@ -8,8 +8,12 @@ repository = "https://github.com/KyleSebion/piolib-rs"
 
 [features]
 default = []
+NDEBUG = []
 PARAM_ASSERTIONS_ENABLE_ALL = []
 PARAM_ASSERTIONS_DISABLE_ALL = []
 PARAM_ASSERTIONS_ENABLED_GPIO = []
+PARAM_ASSERTIONS_ENABLED_PIO = []
+PARAM_ASSERTIONS_ENABLED_PIO_INSTRUCTIONS = []
+PIOLIB_INTERNALS = []
 
 [dependencies]

@@ -3,7 +3,7 @@ pub const PARAM_ASSERTIONS_ENABLED_GPIO: bool = cfg!(feature = "PARAM_ASSERTIONS
 pub const NUM_BANK0_GPIOS: u32 = 32;
 
 #[allow(non_camel_case_types)]
-#[repr(C)]
+#[repr(u32)]
 pub enum gpio_function {
     GPIO_FUNC_XIP = 0,
     GPIO_FUNC_SPI = 1,
@@ -22,7 +22,7 @@ pub const GPIO_OUT: u32 = 1;
 pub const GPIO_IN: u32 = 0;
 
 #[allow(non_camel_case_types)]
-#[repr(C)]
+#[repr(u32)]
 pub enum gpio_irq_level {
     GPIO_IRQ_LEVEL_LOW = 0x1,
     GPIO_IRQ_LEVEL_HIGH = 0x2,
@@ -31,7 +31,7 @@ pub enum gpio_irq_level {
 }
 
 #[allow(non_camel_case_types)]
-#[repr(C)]
+#[repr(u32)]
 pub enum gpio_override {
     GPIO_OVERRIDE_NORMAL = 0,      //< peripheral signal selected via \ref gpio_set_function
     GPIO_OVERRIDE_INVERT = 1,      //< invert peripheral signal selected via \ref gpio_set_function
@@ -40,14 +40,14 @@ pub enum gpio_override {
 }
 
 #[allow(non_camel_case_types)]
-#[repr(C)]
+#[repr(u32)]
 pub enum gpio_slew_rate {
     GPIO_SLEW_RATE_SLOW = 0,  //< Slew rate limiting enabled
     GPIO_SLEW_RATE_FAST = 1   //< Slew rate limiting disabled
 }
 
 #[allow(non_camel_case_types)]
-#[repr(C)]
+#[repr(u32)]
 pub enum gpio_drive_strength {
     GPIO_DRIVE_STRENGTH_2MA = 0, //< 2 mA nominal drive strength
     GPIO_DRIVE_STRENGTH_4MA = 1, //< 4 mA nominal drive strength
