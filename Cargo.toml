@@ -6,4 +6,10 @@ description = "piolib-rs"
 license = "GPL-2.0"
 repository = "https://github.com/KyleSebion/piolib-rs"
 
+[features]
+default = []
+PARAM_ASSERTIONS_ENABLE_ALL = []
+PARAM_ASSERTIONS_DISABLE_ALL = []
+PARAM_ASSERTIONS_ENABLED_GPIO = []
+
 [dependencies]

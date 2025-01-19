@@ -4,8 +4,6 @@
 // Bus type       : ahbl
 // Description    : Programmable IO block
 // =============================================================================
-pub const HARDWARE_REGS_PROC_PIO_DEFINED: bool = true;
-// =============================================================================
 // Register    : PROC_PIO_CTRL
 // Description : PIO control register
 pub const PROC_PIO_CTRL_OFFSET: u32 = 0x00000000;
