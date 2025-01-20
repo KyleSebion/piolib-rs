@@ -13,8 +13,8 @@ macro_rules! print_expr_or_panic {
 fn main() {
     print_expr!(piolib_rs::include::hardware::clocks::clock_index::clk_peri as u32);
     print_expr!(piolib_rs::include::hardware::gpio::gpio_function::GPIO_FUNC_NULL as u32);
-    print_expr!(piolib_rs::include::hardware::pio_instructions::pio_src_dest::pio_exec_mov);
-    print_expr!(piolib_rs::include::hardware::pio_instructions::pio_src_dest::pio_x as u32);
+    print_expr!(piolib_rs::include::hardware::pio_instructions::pio_src_dest::pio_exec_mov.0);
+    print_expr!(piolib_rs::include::hardware::pio_instructions::pio_src_dest::pio_x.0);
     print_expr!(piolib_rs::PARAM_ASSERTIONS_ENABLED_::ENABLE_ALL);
     print_expr!(piolib_rs::PARAM_ASSERTIONS_ENABLED_::DISABLE_ALL);
     print_expr!(piolib_rs::PARAM_ASSERTIONS_ENABLED_::GPIO);

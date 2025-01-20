@@ -1,3 +1,5 @@
+use std::ops::BitAnd;
+
 /** \brief PIO instruction encoding
  *  \defgroup pio_instructions pio_instructions
  *  \ingroup hardware_pio
@@ -26,26 +28,16 @@ pub enum pio_instr_bits {
     pio_instr_bits_set = 0xe000,
 }
 
-#[cfg(not(feature = "NDEBUG"))]
-pub const _PIO_INVALID_IN_SRC: u32 = 0x08;
-#[cfg(not(feature = "NDEBUG"))]
-pub const _PIO_INVALID_OUT_DEST: u32 = 0x10;
-#[cfg(not(feature = "NDEBUG"))]
-pub const _PIO_INVALID_SET_DEST: u32 = 0x20;
-#[cfg(not(feature = "NDEBUG"))]
-pub const _PIO_INVALID_MOV_SRC: u32 = 0x40;
-#[cfg(not(feature = "NDEBUG"))]
-pub const _PIO_INVALID_MOV_DEST: u32 = 0x80;
-#[cfg(feature = "NDEBUG")]
-pub const _PIO_INVALID_IN_SRC: u32 = 0;
-#[cfg(feature = "NDEBUG")]
-pub const _PIO_INVALID_OUT_DEST: u32 = 0;
-#[cfg(feature = "NDEBUG")]
-pub const _PIO_INVALID_SET_DEST: u32 = 0;
-#[cfg(feature = "NDEBUG")]
-pub const _PIO_INVALID_MOV_SRC: u32 = 0;
-#[cfg(feature = "NDEBUG")]
-pub const _PIO_INVALID_MOV_DEST: u32 = 0;
+#[cfg(not(feature = "NDEBUG"))] pub const _PIO_INVALID_IN_SRC: u32 = 0x08;
+#[cfg(not(feature = "NDEBUG"))] pub const _PIO_INVALID_OUT_DEST: u32 = 0x10;
+#[cfg(not(feature = "NDEBUG"))] pub const _PIO_INVALID_SET_DEST: u32 = 0x20;
+#[cfg(not(feature = "NDEBUG"))] pub const _PIO_INVALID_MOV_SRC: u32 = 0x40;
+#[cfg(not(feature = "NDEBUG"))] pub const _PIO_INVALID_MOV_DEST: u32 = 0x80;
+#[cfg(feature = "NDEBUG")]      pub const _PIO_INVALID_IN_SRC: u32 = 0;
+#[cfg(feature = "NDEBUG")]      pub const _PIO_INVALID_OUT_DEST: u32 = 0;
+#[cfg(feature = "NDEBUG")]      pub const _PIO_INVALID_SET_DEST: u32 = 0;
+#[cfg(feature = "NDEBUG")]      pub const _PIO_INVALID_MOV_SRC: u32 = 0;
+#[cfg(feature = "NDEBUG")]      pub const _PIO_INVALID_MOV_DEST: u32 = 0;
 
 /* \brief Enumeration of values to pass for source/destination args for instruction encoding functions
 *  \ingroup pio_instructions
@@ -54,45 +46,31 @@ pub const _PIO_INVALID_MOV_DEST: u32 = 0;
 * `PARAM_ASSERTIONS_ENABLED_PIO_INSTRUCTIONS` is 1
 */
 #[allow(non_camel_case_types)]
-#[repr(u32)]
-#[derive(Clone)]
-pub enum pio_src_dest {
-    pio_pins = 0,
-    pio_x = 1,
-    pio_y = 2,
-    pio_null = 3 | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_DEST,
-    pio_val_4 = 4,
-    pio_val_5 = 5,
-    pio_isr = 6 | _PIO_INVALID_SET_DEST,
-    pio_val_7 = 7,
-}
+pub struct pio_src_dest(pub u32);
 impl pio_src_dest {
-    #[allow(non_camel_case_types, non_upper_case_globals)]
-    pub const pio_pindirs: u32 =
-        Self::pio_val_4 as u32 | _PIO_INVALID_IN_SRC | _PIO_INVALID_MOV_SRC | _PIO_INVALID_MOV_DEST;
-    #[allow(non_camel_case_types, non_upper_case_globals)]
-    pub const pio_exec_mov: u32 = Self::pio_val_4 as u32
-        | _PIO_INVALID_IN_SRC
-        | _PIO_INVALID_OUT_DEST
-        | _PIO_INVALID_SET_DEST
-        | _PIO_INVALID_MOV_SRC;
-    #[allow(non_camel_case_types, non_upper_case_globals)]
-    pub const pio_status: u32 = Self::pio_val_5 as u32
-        | _PIO_INVALID_IN_SRC
-        | _PIO_INVALID_OUT_DEST
-        | _PIO_INVALID_SET_DEST
-        | _PIO_INVALID_MOV_DEST;
-    #[allow(non_camel_case_types, non_upper_case_globals)]
-    pub const pio_pc: u32 =
-        Self::pio_val_5 as u32 | _PIO_INVALID_IN_SRC | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_SRC;
-    #[allow(non_camel_case_types, non_upper_case_globals)]
-    pub const pio_osr: u32 = Self::pio_val_7 as u32 | _PIO_INVALID_OUT_DEST | _PIO_INVALID_SET_DEST;
-    #[allow(non_camel_case_types, non_upper_case_globals)]
-    pub const pio_exec_out: u32 = Self::pio_val_7 as u32
-        | _PIO_INVALID_IN_SRC
-        | _PIO_INVALID_SET_DEST
-        | _PIO_INVALID_MOV_SRC
-        | _PIO_INVALID_MOV_DEST;
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_pins    : pio_src_dest = pio_src_dest(0);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_x       : pio_src_dest = pio_src_dest(1);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_y       : pio_src_dest = pio_src_dest(2);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_null    : pio_src_dest = pio_src_dest(3 | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_DEST);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_pindirs : pio_src_dest = pio_src_dest(4 | _PIO_INVALID_IN_SRC | _PIO_INVALID_MOV_SRC | _PIO_INVALID_MOV_DEST);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_exec_mov: pio_src_dest = pio_src_dest(4 | _PIO_INVALID_IN_SRC | _PIO_INVALID_OUT_DEST | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_SRC);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_status  : pio_src_dest = pio_src_dest(5 | _PIO_INVALID_IN_SRC | _PIO_INVALID_OUT_DEST | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_DEST);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_pc      : pio_src_dest = pio_src_dest(5 | _PIO_INVALID_IN_SRC | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_SRC);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_isr     : pio_src_dest = pio_src_dest(6 | _PIO_INVALID_SET_DEST);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_osr     : pio_src_dest = pio_src_dest(7 | _PIO_INVALID_OUT_DEST | _PIO_INVALID_SET_DEST);
+    #[allow(non_camel_case_types, non_upper_case_globals)] pub const pio_exec_out: pio_src_dest = pio_src_dest(7 | _PIO_INVALID_IN_SRC | _PIO_INVALID_SET_DEST | _PIO_INVALID_MOV_SRC | _PIO_INVALID_MOV_DEST);
+}
+impl BitAnd<u32> for pio_src_dest {
+    type Output = u32;
+    fn bitand(self, rhs: u32) -> Self::Output {
+        self.0 & rhs
+    }
+}
+impl BitAnd<u32> for &pio_src_dest {
+    type Output = u32;
+    fn bitand(self, rhs: u32) -> Self::Output {
+        self.0 & rhs
+    }
 }
 
 pub fn _pio_major_instr_bits(instr: u32) -> u32 {
@@ -120,7 +98,7 @@ pub fn _pio_encode_instr_and_src_dest(
     dest: pio_src_dest,
     value: u32,
 ) -> u32 {
-    _pio_encode_instr_and_args(instr_bits, dest as u32 & 7, value)
+    _pio_encode_instr_and_args(instr_bits, dest & 7, value)
 }
 
 /* \brief Encode just the delay slot bits of an instruction
@@ -352,10 +330,7 @@ pub fn pio_encode_wait_irq(polarity: bool, relative: bool, irq: u32) -> u32 {
 */
 #[allow(clippy::bad_bit_mask)]
 pub fn pio_encode_in(src: pio_src_dest, count: u32) -> u32 {
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (src.clone() as u32 & _PIO_INVALID_IN_SRC)
-    );
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&src & _PIO_INVALID_IN_SRC));
     _pio_encode_instr_and_src_dest(pio_instr_bits::pio_instr_bits_in, src, count)
 }
 
@@ -371,10 +346,7 @@ pub fn pio_encode_in(src: pio_src_dest, count: u32) -> u32 {
 */
 #[allow(clippy::bad_bit_mask)]
 pub fn pio_encode_out(dest: pio_src_dest, count: u32) -> u32 {
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (dest.clone() as u32 & _PIO_INVALID_OUT_DEST)
-    );
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&dest & _PIO_INVALID_OUT_DEST));
     _pio_encode_instr_and_src_dest(pio_instr_bits::pio_instr_bits_out, dest, count)
 }
 
@@ -422,15 +394,9 @@ pub fn pio_encode_pull(if_empty: bool, block: bool) -> u32 {
 */
 #[allow(clippy::bad_bit_mask)]
 pub fn pio_encode_mov(dest: pio_src_dest, src: pio_src_dest) -> u32 {
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (dest.clone() as u32 & _PIO_INVALID_MOV_DEST)
-    );
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (src.clone() as u32 & _PIO_INVALID_MOV_SRC)
-    );
-    _pio_encode_instr_and_src_dest(pio_instr_bits::pio_instr_bits_mov, dest, src as u32 & 7)
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&dest & _PIO_INVALID_MOV_DEST));
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&src & _PIO_INVALID_MOV_SRC));
+    _pio_encode_instr_and_src_dest(pio_instr_bits::pio_instr_bits_mov, dest, src & 7)
 }
 
 /* \brief Encode a MOV instruction with bit invert
@@ -445,18 +411,12 @@ pub fn pio_encode_mov(dest: pio_src_dest, src: pio_src_dest) -> u32 {
 */
 #[allow(clippy::bad_bit_mask)]
 pub fn pio_encode_mov_not(dest: pio_src_dest, src: pio_src_dest) -> u32 {
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (dest.clone() as u32 & _PIO_INVALID_MOV_DEST)
-    );
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (src.clone() as u32 & _PIO_INVALID_MOV_SRC)
-    );
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&dest & _PIO_INVALID_MOV_DEST));
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&src & _PIO_INVALID_MOV_SRC));
     _pio_encode_instr_and_src_dest(
         pio_instr_bits::pio_instr_bits_mov,
         dest,
-        (1 << 3) | (src as u32 & 7),
+        (1 << 3) | (src & 7),
     )
 }
 
@@ -472,18 +432,12 @@ pub fn pio_encode_mov_not(dest: pio_src_dest, src: pio_src_dest) -> u32 {
 */
 #[allow(clippy::bad_bit_mask)]
 pub fn pio_encode_mov_reverse(dest: pio_src_dest, src: pio_src_dest) -> u32 {
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (dest.clone() as u32 & _PIO_INVALID_MOV_DEST)
-    );
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (src.clone() as u32 & _PIO_INVALID_MOV_SRC)
-    );
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&dest & _PIO_INVALID_MOV_DEST));
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&src & _PIO_INVALID_MOV_SRC));
     _pio_encode_instr_and_src_dest(
         pio_instr_bits::pio_instr_bits_mov,
         dest,
-        (2 << 3) | (src as u32 & 7),
+        (2 << 3) | (src & 7),
     )
 }
 
@@ -553,10 +507,7 @@ pub fn pio_encode_irq_clear(relative: bool, irq: u32) -> u32 {
 */
 #[allow(clippy::bad_bit_mask)]
 pub fn pio_encode_set(dest: pio_src_dest, value: u32) -> u32 {
-    crate::valid_params_if!(
-        PIO_INSTRUCTIONS,
-        0 == (dest.clone() as u32 & _PIO_INVALID_SET_DEST)
-    );
+    crate::valid_params_if!(PIO_INSTRUCTIONS, 0 == (&dest & _PIO_INVALID_SET_DEST));
     _pio_encode_instr_and_src_dest(pio_instr_bits::pio_instr_bits_set, dest, value)
 }
 
